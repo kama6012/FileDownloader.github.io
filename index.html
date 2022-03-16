@@ -10,13 +10,15 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
         <script type="text/javascript" src="js/jszip.min.js"></script>
       <script type='text/javascript'>
-        var zip = new JSZip();
-
-        zip.file("Hello.txt", "Hello World\n")
-
+      async function genzip(){
+        let zip = new JSZip();
+        let skin = fetch('https://crafatar.com/skins/565d64224b444734a22eca9ac6039ceb').then(response => response.blob());
+        zip.file("skin.png", skin);
         zip.generateAsync({type:"blob"}).then(function(content) {
           saveAs(content, "example.zip");
         });
+      }
+      genzip();
       </script>
     </body>
 </html>
