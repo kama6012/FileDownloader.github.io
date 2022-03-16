@@ -6,30 +6,17 @@
     </head>
     <body>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>      
-        <script type="text/javascript" src="js/zip.min.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
+        <script type="text/javascript" src="js/jszip.min.js"></script>
       <script type='text/javascript'>
-        function handleDownload() {
-          var zip = new Zlib.Zip();
-          var plainData = JSON.stringify(getJsonObj());
-          zip.addFile(strToUtf8Array(plainData), {
-              filename: strToUtf8Array('sample/sample001.json')
-          });
-          var compressData = zip.compress();
+        var zip = new JSZip();
 
-          var blob = new Blob([compressData], { 'type': 'application/zip' });
+        zip.file("Hello.txt", "Hello World\n")
 
-            if (window.navigator.msSaveBlob) { 
-                window.navigator.msSaveBlob(blob, "test.zip"); 
-
-                // msSaveOrOpenBlobの場合はファイルを保存せずに開ける
-                window.navigator.msSaveOrOpenBlob(blob, "test.zip"); 
-            } else {
-                document.getElementById("download").href = window.URL.createObjectURL(blob);
-            }
-        }
+        zip.generateAsync({type:"blob"}).then(function(content) {
+          saveAs(content, "example.zip");
+        });
       </script>
-      <a id="download" href="#" download="test.zip" onclick="handleDownload()">ダウンロード</a>
     </body>
 </html>
